@@ -1,7 +1,7 @@
 from collections import Counter
 from unittest import TestCase
 
-from RandomGen.random_gen import RandomGen
+from RandomGen.random_number_generator import RandomGen
 from RandomGen.exceptions import NotProbMassFuncException
 
 
@@ -13,7 +13,7 @@ class TestRandomGen(TestCase):
 
     def test_validation(self):
         with self.assertRaises(NotProbMassFuncException):
-            self.random_gen.refresh(
+            self.random_gen.reinit(
                 [
                     1,
                 ],
@@ -21,7 +21,7 @@ class TestRandomGen(TestCase):
             )
 
         with self.assertRaises(NotProbMassFuncException):
-            self.random_gen.refresh(
+            self.random_gen.reinit(
                 [
                     1,
                 ],
@@ -45,7 +45,33 @@ class TestRandomGen(TestCase):
         for num in self.random_num:
             self.assertEqual(counter[num], c[num])
 
-    def test_big_data(self):
+    def test_refresh(self):
+        self.random_gen.resize(1000000)
+        self.assertEqual(self.random_gen._observation_size, 1000000)
+
+    def test_reinit(self):
+        self.random_gen.reinit(
+            [
+                1,
+            ],
+            [
+                1,
+            ],
+        )
+        self.assertEqual(
+            self.random_gen._random_nums,
+            [
+                1,
+            ],
+        )
+        self.assertEqual(
+            self.random_gen._probabilities,
+            [
+                1,
+            ],
+        )
+
+    def test_big_input(self):
         self.random_gen.resize(1000000)
         counter = Counter[int]()
         for i in self.random_gen:

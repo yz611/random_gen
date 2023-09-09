@@ -42,7 +42,7 @@ class RandomGenBase(object):
     @staticmethod
     def validate_random_nums(random_nums: list[int], probs: list[float]):
         if len(random_nums) < len(probs):
-            raise NotProbMassFuncException("More numbers than probabilities")
+            raise NotProbMassFuncException("More probabilities than numbers")
 
     @abstractmethod
     def pmf(self):
@@ -72,12 +72,16 @@ class RandomGen(RandomGenBase):
         return self._counter
 
     def resize(self, new_size: int):
-        self._count = 0
         self._observation_size = new_size
 
-    def refresh(self, random_nums: list[int], probs: list[float]):
+    def reinit(self, random_nums: list[int], probs: list[float]):
         self.validate_probs(probs)
         self.validate_random_nums(random_nums, probs)
+        self._random_nums = random_nums
+        self._probabilities = probs
+        self._count = 0
+
+    def recount(self):
         self._count = 0
 
     def __iter__(self):
@@ -106,5 +110,5 @@ class RandomGen(RandomGenBase):
         """probability mass function by Monte Carlo"""
         pmf = {}
         for value, count in self._counter.items():
-            pmf[value] = count / float(self._observation_size)
+            pmf[value] = round(count / float(self._observation_size), 2)
         return dict(reversed(pmf.items()))

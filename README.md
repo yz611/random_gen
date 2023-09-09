@@ -1,5 +1,5 @@
-# mangroup_homework
-A homework from man group
+# RandomGen
+A simple random number generator
 
 ## Algorithms
 
