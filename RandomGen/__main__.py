@@ -3,14 +3,7 @@ import sys
 
 from RandomGen.random_number_generator import RandomGen
 
-random_gen = RandomGen(
-    [
-        1,
-    ],
-    [
-        1,
-    ],
-)
+random_gen = RandomGen([-1, 0, 1, 2, 3], [0.01, 0.3, 0.58, 0.1, 0.01])
 
 
 def main(argv):
@@ -32,13 +25,18 @@ def main(argv):
             pmf = True
 
     print("output_size: ")
-    output_size = int(input().strip(""))
+    size_input = input().strip("")
+    if size_input:
+        output_size = int(size_input)
+    else:
+        output_size = 0
 
     if observation_size:
         random_gen.resize(observation_size)
-    if values and probs:
+    if len(values) and len(probs):
         random_gen.reinit(values, probs)
-    random_gen.reinit(values, probs)
+    else:
+        print("Ineffective inputs. Using default.")
 
     if output_size > observation_size:
         raise ValueError("more outputs than observations")

@@ -109,6 +109,8 @@ class RandomGen(RandomGenBase):
     def pmf(self):
         """probability mass function by Monte Carlo"""
         pmf = {}
+        while self._count < self._observation_size:
+            next(self)
         for value, count in self._counter.items():
             pmf[value] = round(count / float(self._observation_size), 2)
         return dict(reversed(pmf.items()))
