@@ -6,7 +6,7 @@ VERSION = "1.0.0"
 DESCRIPTION = "A simple random number generator package"
 AUTHOR = "Yichi.Zhang"
 AUTHOR_EMAIL = "yichizhang2021@outlook.com"
-URL = "https://github.com/yz611/mangroup_homework"
+URL = "https://github.com/yz611/random_gen"
 
 # Define package dependencies, if any
 INSTALL_REQUIRES = []
