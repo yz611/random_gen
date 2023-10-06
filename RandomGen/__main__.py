@@ -48,7 +48,6 @@ def main(argv):
         print(f"{count}: {next(random_gen)}")
 
     if pmf:
-        random_gen.recount()
         print("probability mass function: ")
         print(random_gen.pmf)
 

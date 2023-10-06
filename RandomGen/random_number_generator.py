@@ -59,6 +59,7 @@ class RandomGen(RandomGenBase):
     ):
         self._random_nums = random_nums
         self._probabilities = probs
+        self._cumulative_probs = [i for i in accumulate(probs)]
         self._observation_size = observation_size
         self._count = 0
         self._counter = Counter[int]()
@@ -75,11 +76,7 @@ class RandomGen(RandomGenBase):
         self._observation_size = new_size
 
     def reinit(self, random_nums: list[int], probs: list[float]):
-        self.validate_probs(probs)
-        self.validate_random_nums(random_nums, probs)
-        self._random_nums = random_nums
-        self._probabilities = probs
-        self._count = 0
+        self.__init__(random_nums, probs)
 
     def recount(self):
         self._count = 0
@@ -87,9 +84,6 @@ class RandomGen(RandomGenBase):
     def __iter__(self):
         self._count = 0
         return self
-
-    def get_cumulative_probs(self):
-        return (round(i, 2) for i in accumulate(self._probabilities))
 
     def __next__(self):
         if self._observation_size > self._count:
@@ -99,7 +93,7 @@ class RandomGen(RandomGenBase):
 
     def next_num(self) -> int:
         random_number = random.random()
-        for i, prob in enumerate(self.get_cumulative_probs()):
+        for i, prob in enumerate(self._cumulative_probs):
             if prob > random_number:
                 num = self._random_nums[i]
                 self._counter[num] += 1
@@ -112,5 +106,5 @@ class RandomGen(RandomGenBase):
         while self._count < self._observation_size:
             next(self)
         for value, count in self._counter.items():
-            pmf[value] = round(count / float(self._observation_size), 2)
+            pmf[value] = count / float(self._observation_size)
         return dict(reversed(pmf.items()))

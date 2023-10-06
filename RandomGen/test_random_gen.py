@@ -33,7 +33,7 @@ class TestRandomGen(TestCase):
         self.assertIn(t, self.random_num)
 
     def test_cumulative_probs(self):
-        accumulated = list(self.random_gen.get_cumulative_probs())
+        accumulated = [round(i, 2) for i in self.random_gen._cumulative_probs]
         expected = [0.01, 0.31, 0.89, 0.99, 1.00]
         self.assertEqual(accumulated, expected)
 
